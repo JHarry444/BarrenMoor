@@ -24,8 +24,10 @@ public class Game {
 
 	public Coordinates genCoordinates() {
 		Coordinates co_ords = new Coordinates();
-		co_ords.setX(rand.nextInt(size) - (size / 2));
-		co_ords.setY(rand.nextInt(size) - (size / 2));
+		do {
+			co_ords.setX(rand.nextInt(size) - (size / 2));
+			co_ords.setY(rand.nextInt(size) - (size / 2));
+		} while (co_ords.getDistance() == 0);
 		return co_ords;
 	}
 
