@@ -50,13 +50,17 @@ public class Game {
 		return EntityFactory.genEntity(type, co_ords);
 	}
 
+	public void setup() {
+		this.treasure = (Treasure) this.genEntity("treasure");
+		this.entities.add(treasure);
+		this.entities.add(this.genEntity("nick"));
+		this.entities.add(this.genEntity("unicorn"));
+	}
+
 	public void play() {
 		do {
 			System.out.println(this.getIntro());
-			this.treasure = (Treasure) this.genEntity("treasure");
-			this.entities.add(treasure);
-			this.entities.add(this.genEntity("nick"));
-			this.entities.add(this.genEntity("unicorn"));
+			this.setup();
 			do {
 				if (this.easy) {
 					this.entities.forEach(System.out::println);
