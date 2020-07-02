@@ -47,7 +47,7 @@ public class Game {
 
 	public GameEntity genEntity(String type) {
 		Coordinates co_ords = this.genCoordinates();
-		return EntityFactory.genEntity(type, co_ords);
+		return EntityFactory.getInstance().genEntity(type, co_ords);
 	}
 
 	public void setup() {

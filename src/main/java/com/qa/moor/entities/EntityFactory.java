@@ -4,7 +4,17 @@ import com.qa.moor.Coordinates;
 
 public class EntityFactory {
 
-	public static GameEntity genEntity(String type, Coordinates co_ords) {
+	private EntityFactory() {
+		super();
+	}
+
+	public static final EntityFactory INSTANCE = new EntityFactory(); // eagerly initialised
+
+	public static EntityFactory getInstance() {
+		return INSTANCE;
+	}
+
+	public GameEntity genEntity(String type, Coordinates co_ords) {
 		switch (type.strip().toLowerCase()) {
 		case "treasure":
 			return new Treasure(co_ords);
