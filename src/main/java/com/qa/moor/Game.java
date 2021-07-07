@@ -1,28 +1,42 @@
 package com.qa.moor;
 
-import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+
+import com.qa.moor.entities.EntityFactory;
+import com.qa.moor.entities.GameEntity;
+import com.qa.moor.entities.Treasure;
 
 public class Game {
 
 	private Scanner scanner;
 
-	private Coordinates co_ords;
+	private Treasure treasure;
+
+	private List<GameEntity> entities;
 
 	private Random rand = new Random();
 
-	private DecimalFormat formatter = new DecimalFormat("#.##");
-
 	private int size;
 
+	private final boolean easy;
+
 	public Game(Scanner scanner, int size) {
+		this(scanner, size, false);
+	}
+
+	public Game(Scanner scanner, int size, boolean easy) {
 		super();
 		this.scanner = scanner;
 		this.size = size;
+		this.easy = easy;
+
+		this.entities = new ArrayList<>();
 	}
 
-	public Coordinates genCoordinates() {
+	private Coordinates genCoordinates() {
 		Coordinates co_ords = new Coordinates();
 		do {
 			co_ords.setX(rand.nextInt(size) - (size / 2));
@@ -31,21 +45,43 @@ public class Game {
 		return co_ords;
 	}
 
+	public GameEntity genEntity(String type) {
+		Coordinates co_ords = this.genCoordinates();
+		return EntityFactory.getInstance().genEntity(type, co_ords);
+	}
+
+	public void setup() {
+		this.treasure = (Treasure) this.genEntity("treasure");
+		this.entities.add(treasure);
+		this.entities.add(this.genEntity("nick"));
+		this.entities.add(this.genEntity("unicorn"));
+	}
+
 	public void play() {
 		do {
 			System.out.println(this.getIntro());
-			this.co_ords = this.genCoordinates();
+			this.setup();
 			do {
-				System.out.println("The dial reads '" + this.formatter.format(this.co_ords.getDistance()) + "'");
+				if (this.easy) {
+					this.entities.forEach(System.out::println);
+				}
+				System.out.println("The dial reads '" + this.treasure.getDistance() + "'");
+
 				this.move();
-			} while (this.co_ords.getDistance() > 0);
-			System.out.println(this.victory());
+			} while (!gameOver());
 		} while (this.playAgain());
 		System.out.println(this.getOutro());
 	}
 
-	private String victory() {
-		return "You see a box sitting on the plain. It’s filled with treasure! You win! The end.";
+	private boolean gameOver() {
+		this.entities.stream().filter(entity -> entity.getDistance().equals("0"))
+				.forEach(entity -> System.out.println(entity.getMessage()));
+		return this.entities.stream().filter(entity -> entity.getDistance().equals("0"))
+				.anyMatch(GameEntity::isGameOver);
+	}
+
+	private void updateCoords(int x, int y) {
+		this.entities.forEach(entity -> entity.updateCoords(x, y));
 	}
 
 	private void move() {
@@ -55,22 +91,22 @@ public class Game {
 			switch (response) {
 			case ("n"):
 			case ("north"):
-				this.co_ords.setY(this.co_ords.getY() - 1);
+				this.updateCoords(0, -1);
 				valid = true;
 				break;
 			case ("s"):
 			case ("south"):
-				this.co_ords.setY(this.co_ords.getY() + 1);
+				this.updateCoords(0, +1);
 				valid = true;
 				break;
 			case ("e"):
 			case ("east"):
-				this.co_ords.setX(this.co_ords.getX() - 1);
+				this.updateCoords(-1, 0);
 				valid = true;
 				break;
 			case ("w"):
 			case ("west"):
-				this.co_ords.setX(this.co_ords.getX() + 1);
+				this.updateCoords(+1, 0);
 				valid = true;
 				break;
 			default:
