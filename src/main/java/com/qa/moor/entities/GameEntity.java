@@ -6,7 +6,7 @@ import com.qa.moor.Coordinates;
 
 public abstract class GameEntity {
 
-	private final Coordinates co_ords;
+	private final Coordinates location;
 
 	private final boolean gameOver;
 
@@ -14,20 +14,20 @@ public abstract class GameEntity {
 
 	private static final DecimalFormat formatter = new DecimalFormat("#.##");
 
-	public GameEntity(Coordinates co_ords, boolean gameOver, String message) {
+	public GameEntity(Coordinates location, boolean gameOver, String message) {
 		super();
-		this.co_ords = co_ords;
+		this.location = location;
 		this.gameOver = gameOver;
 		this.message = message;
 	}
 
 	public void updateCoords(int x, int y) {
-		this.co_ords.setX(this.co_ords.getX() + x);
-		this.co_ords.setY(this.co_ords.getY() + y);
+		this.location.setX(this.location.getX() + x);
+		this.location.setY(this.location.getY() + y);
 	}
 
 	public String getDistance() {
-		return formatter.format(this.co_ords.getDistance());
+		return formatter.format(this.location.getDistance());
 	}
 
 	public boolean isGameOver() {
@@ -40,7 +40,7 @@ public abstract class GameEntity {
 
 	@Override
 	public String toString() {
-		return "GameEntity [co_ords=" + co_ords + ", gameOver=" + gameOver + ", message=" + message + "]";
+		return "GameEntity [location=" + location + ", gameOver=" + gameOver + ", message=" + message + "]";
 	}
 
 }

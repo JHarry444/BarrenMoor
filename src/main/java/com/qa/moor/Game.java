@@ -3,15 +3,15 @@ package com.qa.moor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 import com.qa.moor.entities.EntityFactory;
 import com.qa.moor.entities.GameEntity;
 import com.qa.moor.entities.Treasure;
+import com.qa.moor.utils.UserInput;
 
 public class Game {
 
-	private Scanner scanner;
+	private UserInput input;
 
 	private Treasure treasure;
 
@@ -23,13 +23,13 @@ public class Game {
 
 	private final boolean easy;
 
-	public Game(Scanner scanner, int size) {
-		this(scanner, size, false);
+	public Game(UserInput input, int size) {
+		this(input, size, false);
 	}
 
-	public Game(Scanner scanner, int size, boolean easy) {
+	public Game(UserInput input, int size, boolean easy) {
 		super();
-		this.scanner = scanner;
+		this.input = input;
 		this.size = size;
 		this.easy = easy;
 
@@ -37,23 +37,22 @@ public class Game {
 	}
 
 	private Coordinates genCoordinates() {
-		Coordinates co_ords = new Coordinates();
+		Coordinates location = new Coordinates();
 		do {
-			co_ords.setX(rand.nextInt(size) - (size / 2));
-			co_ords.setY(rand.nextInt(size) - (size / 2));
-		} while (co_ords.getDistance() == 0);
-		return co_ords;
+			location.setX(rand.nextInt(size) - (size / 2));
+			location.setY(rand.nextInt(size) - (size / 2));
+		} while (location.getDistance() == 0);
+		return location;
 	}
 
 	public GameEntity genEntity(String type) {
-		Coordinates co_ords = this.genCoordinates();
-		return EntityFactory.getInstance().genEntity(type, co_ords);
+		Coordinates location = this.genCoordinates();
+		return EntityFactory.getInstance().genEntity(type, location);
 	}
 
 	public void setup() {
 		this.treasure = (Treasure) this.genEntity("treasure");
 		this.entities.add(treasure);
-		this.entities.add(this.genEntity("nick"));
 		this.entities.add(this.genEntity("unicorn"));
 	}
 
@@ -87,7 +86,7 @@ public class Game {
 	private void move() {
 		boolean valid = true;
 		do {
-			String response = this.getResponse().toLowerCase();
+			String response = this.input.getText().toLowerCase();
 			switch (response) {
 			case ("n"):
 			case ("north"):
@@ -122,13 +121,8 @@ public class Game {
 
 	public boolean playAgain() {
 		System.out.println("Would you like to play again? Y/N");
-		String response = getResponse();
+		String response = this.input.getText();
 		return response.equalsIgnoreCase("y") || response.equalsIgnoreCase("yes");
-	}
-
-	public String getResponse() {
-		String response = this.scanner.nextLine();
-		return response;
 	}
 
 	public String getIntro() {

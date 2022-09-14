@@ -18,8 +18,6 @@ public class EntityFactory {
 		switch (type.strip().toLowerCase()) {
 		case "treasure":
 			return new Treasure(co_ords);
-		case "nick":
-			return new Nick(co_ords);
 		case "unicorn":
 			return new MagicalUnicorn(co_ords);
 		default:
