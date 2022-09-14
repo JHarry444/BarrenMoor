@@ -8,7 +8,7 @@ public class Game {
 
 	private Scanner scanner;
 
-	private Coordinates co_ords;
+	private Coordinates location;
 
 	private Random rand = new Random();
 
@@ -23,22 +23,22 @@ public class Game {
 	}
 
 	public Coordinates genCoordinates() {
-		Coordinates co_ords = new Coordinates();
+		Coordinates location = new Coordinates();
 		do {
-			co_ords.setX(rand.nextInt(size) - (size / 2));
-			co_ords.setY(rand.nextInt(size) - (size / 2));
-		} while (co_ords.getDistance() == 0);
-		return co_ords;
+			location.setX(rand.nextInt(size) - (size / 2));
+			location.setY(rand.nextInt(size) - (size / 2));
+		} while (location.getDistance() == 0);
+		return location;
 	}
 
 	public void play() {
 		do {
 			System.out.println(this.getIntro());
-			this.co_ords = this.genCoordinates();
+			this.location = this.genCoordinates();
 			do {
-				System.out.println("The dial reads '" + this.formatter.format(this.co_ords.getDistance()) + "'");
+				System.out.println("The dial reads '" + this.formatter.format(this.location.getDistance()) + "'");
 				this.move();
-			} while (this.co_ords.getDistance() > 0);
+			} while (this.location.getDistance() > 0);
 			System.out.println(this.victory());
 		} while (this.playAgain());
 		System.out.println(this.getOutro());
@@ -55,22 +55,22 @@ public class Game {
 			switch (response) {
 			case ("n"):
 			case ("north"):
-				this.co_ords.setY(this.co_ords.getY() - 1);
+				this.location.setY(this.location.getY() - 1);
 				valid = true;
 				break;
 			case ("s"):
 			case ("south"):
-				this.co_ords.setY(this.co_ords.getY() + 1);
+				this.location.setY(this.location.getY() + 1);
 				valid = true;
 				break;
 			case ("e"):
 			case ("east"):
-				this.co_ords.setX(this.co_ords.getX() - 1);
+				this.location.setX(this.location.getX() - 1);
 				valid = true;
 				break;
 			case ("w"):
 			case ("west"):
-				this.co_ords.setX(this.co_ords.getX() + 1);
+				this.location.setX(this.location.getX() + 1);
 				valid = true;
 				break;
 			default:
