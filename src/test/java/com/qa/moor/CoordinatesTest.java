@@ -10,6 +10,6 @@ public class CoordinatesTest {
 
 	@Test
 	public void testDistance() {
-		assertEquals("6.4", this.coords.getDistance());
+		assertEquals(6.4, this.coords.getDistance(), 0.1);
 	}
 }

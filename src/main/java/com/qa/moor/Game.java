@@ -23,6 +23,11 @@ public class Game {
 
 	private final boolean easy;
 
+	public Game() {
+		super();
+		easy = false;
+	}
+
 	public Game(UserInput input, int size) {
 		this(input, size, false);
 	}
