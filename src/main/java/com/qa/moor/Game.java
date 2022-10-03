@@ -65,7 +65,6 @@ public class Game {
 					this.entities.forEach(System.out::println);
 				}
 				System.out.println("The dial reads '" + this.treasure.getDistance() + "'");
-
 				this.move();
 			} while (!gameOver());
 		} while (this.playAgain());
